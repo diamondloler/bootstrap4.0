@@ -1,0 +1,17 @@
+{
+  "name": "bootstrap",
+  "version": "1.0.0",
+  "description": "nice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nice"
+  ],
+  "author": "alex",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.8.2"
+  }
+}

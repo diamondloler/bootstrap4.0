@@ -1,0 +1,38 @@
+.fuck {
+    display: none;
+    opacity: 0;
+    transition: all 1s ease-in-out 100ms;
+}
+.fade {
+    opacity: 1;
+
+}
+body { 
+  height: 100vh;
+  font-size: inherit
+}
+.damit {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    height: 300px;
+}
+.damit .left {
+    flex-grow: 1;
+    background: #A12;
+}
+.damit .right {
+    flex-grow: 1;
+    background: #794;
+}
+.loading {
+    position: absolute;
+    top: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+.loading .line{
+    background: #A12;
+    height: 4px;
+    width: 0;
+}

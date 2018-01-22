@@ -1,0 +1,9 @@
+.test { 
+    width: 100px;
+    height: 100px;
+    background: #A12;
+    position: relative;
+}
+.ul li{
+   margin: 500px 0; 
+}

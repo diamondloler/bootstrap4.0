@@ -1,0 +1,23 @@
+{
+  "name": "bootstrap",
+  "description": "nice",
+  "main": "index.js",
+  "authors": [
+    "alex"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "nice"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
