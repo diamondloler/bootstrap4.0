@@ -86,4 +86,13 @@ gulp.task('js', ['rjs'], function () {
         .pipe(gulp.dest('./dist/js'))
 })
 
-gulp.task('default', ['js', 'css'])
+gulp.task('html', function () {
+    return gulp.src(['./page/*.html'])
+        .pipe(htmlreplace({
+            css: 'css/main.min.css',
+            js: 'js/main.min.js'
+        }))
+        .pipe(gulp.dest('./dist'))
+})
+
+gulp.task('default', ['js', 'css', 'html'])
