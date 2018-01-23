@@ -1,30 +1,35 @@
 .fuck {
     display: none;
     opacity: 0;
-    transition: all 1s ease-in-out 100ms;
+    transition: all 1s 100ms;
 }
+
 .fade {
     opacity: 1;
+}
 
+body {
+    height: 100vh;
+    font-size: inherit
 }
-body { 
-  height: 100vh;
-  font-size: inherit
-}
+
 .damit {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     height: 300px;
 }
+
 .damit .left {
     flex-grow: 1;
     background: #A12;
 }
+
 .damit .right {
     flex-grow: 1;
     background: #794;
 }
+
 .loading {
     position: absolute;
     top: 0;
@@ -32,51 +37,63 @@ body {
     width: 100%;
     z-index: 999;
 }
-.loading .line{
+
+.loading .line {
     background: #A12;
     height: 4px;
     width: 0;
 }
-.img-300{
+
+.img-300 {
     cursor: zoom-in;
     position: relative;
-    transition: all .35s ease-in-out;
+    transition: all .35s;
     width: 300px;
 }
+
 .mask {
     background: #fff;
     height: 100vh;
     opacity: 0;
     position: fixed;
     top: 0;
-    transition: all .35s ease-in-out;
+    transition: all .35s;
     width: 100%;
     z-index: 1000;
-
 }
+
 .zoom-img-wrapper {
     position: relative;
     margin: 50px auto;
-    transition: all .35s ease-in-out;
+    transition: all .35s;
     width: 300px;
-   
 }
+
 .fade {
     opacity: 0.8;
 }
+
 .scale {
     cursor: default;
     transform: scale(2.5);
 }
-.h-v-center{
-    left: 50%;
+
+.h-v-center {
     margin-top: 0;
-    top: 50%;
     transform: translate(-50%, -50%);
     z-index: 1001;
 }
+
 @media screen and (max-width:768px) {
-    .zoom-img-wrapper,.img-300{
-        width: 150px;
-    }
+.zoom-img-wrapper,
+.img-300 {
+    width: 150px;
+}
+.h-v-center{
+    position: absolute;
+}
+.scale {
+    transform: scale(1.8);
+}
+
 }
