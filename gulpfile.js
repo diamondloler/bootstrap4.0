@@ -95,4 +95,9 @@ gulp.task('html', function () {
         .pipe(gulp.dest('./dist'))
 })
 
-gulp.task('default', ['js', 'css', 'html'])
+gulp.task('asset-img', function () {
+    return gulp.src(['./images/*'])
+        .pipe(gulp.dest('./dist/images'))
+})
+
+gulp.task('default', ['js', 'css', 'html', 'asset-img'])

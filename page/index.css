@@ -30,9 +30,53 @@ body {
     top: 0;
     overflow-x: hidden;
     width: 100%;
+    z-index: 999;
 }
 .loading .line{
     background: #A12;
     height: 4px;
     width: 0;
+}
+.img-300{
+    cursor: zoom-in;
+    position: relative;
+    transition: all .35s ease-in-out;
+    width: 300px;
+}
+.mask {
+    background: #fff;
+    height: 100vh;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    transition: all .35s ease-in-out;
+    width: 100%;
+    z-index: 1000;
+
+}
+.zoom-img-wrapper {
+    position: relative;
+    margin: 50px auto;
+    transition: all .35s ease-in-out;
+    width: 300px;
+   
+}
+.fade {
+    opacity: 0.8;
+}
+.scale {
+    cursor: default;
+    transform: scale(2.5);
+}
+.h-v-center{
+    left: 50%;
+    margin-top: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+}
+@media screen and (max-width:768px) {
+    .zoom-img-wrapper,.img-300{
+        width: 150px;
+    }
 }
