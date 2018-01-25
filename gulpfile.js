@@ -14,7 +14,7 @@ var postcss = require('gulp-postcss'),
 var getAMDModule = function (globList) {
     var list = [];
     globList.forEach(function (item) {
-        list.concat(glob.sync(item))
+        list = list.concat(glob.sync(item))
     })
     list = list.map(function (item) {
         return path.relative('./', item).replace('.js', '').replace(path.sep, '/');
@@ -42,7 +42,7 @@ gulp.task('css', function () {
 })
 
 gulp.task('rjs', function () {
-    global.BASE_PATH = '../'
+    global.BASE_PATH = './'
     global.requirejs = function () {};
     global.requirejs.config = function (option) {
         rjsConfig = Object.assign({
@@ -51,7 +51,11 @@ gulp.task('rjs', function () {
             baseUrl: BASE_PATH,
             generateSourceMaps: true,
             preserveLicenseComments: false,
-            optimize: "uglify2",
+            separateCSS: true,
+            pragmasOnSave:{
+                excludeRequireCss: true
+            },
+            optimize: "none",
             out: "modules.js"
         }, option)
     }
@@ -59,12 +63,14 @@ gulp.task('rjs', function () {
     require('./config/config')
     global.requirejs = undefined
     global.BASE_PATH = undefined
+
+    rjsConfig.baseUrl = "./";
+    // rjsConfig.separateCSS = true
+    // //   rjsConfig.buildCSS = false
+    // rjsConfig.pragmasOnSave = {
+    //     excludeRequireCss: true
+    // };
     rjsConfig.include = getAMDModule(['./page/*.js'])
-    rjsConfig.map = {
-        '*': {
-            'css': 'lib/require-css/r-css-pro'
-        }
-    }
     return gulp.src(['./page/render.js'])
         .pipe(sourcemaps.init())
         .pipe(rjs(rjsConfig))
