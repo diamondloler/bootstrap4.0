@@ -64,7 +64,6 @@ body {
 
 .zoom-img-wrapper {
     position: relative;
-    margin: 50px auto;
     transition: all .35s;
     width: 300px;
 }
@@ -74,14 +73,12 @@ body {
 }
 
 .scale {
-    cursor: default;
+    cursor: zoom-out;
     transform: scale(2.5);
 }
 
-.h-v-center {
-    margin-top: 0;
-    transform: translate(-50%, -50%);
-    z-index: 1001;
+.zoom-img-wrapper.h-v-center {
+    z-index: 1001!important;
 }
 
 @media screen and (max-width:768px) {

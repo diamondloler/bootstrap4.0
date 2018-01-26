@@ -348,7 +348,7 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
     function smoothLoading(options_) {
         'use strict';
 
-        
+
         //default settings
         var options = {
             speed: 1000,
@@ -399,42 +399,129 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
             width = 0,
             frameId = 0;
 
-        var stopLoop =  function () {
+        var soomth_loading = {};
+
+        soomth_loading.stopLoop = function () {
             window.cancelAnimationFrame(frameId);
-            return true;
         }
-        
+
+        soomth_loading.cancelProgress = function (width) {
+            if (width > 80) {
+                //clear timer
+                soomth_loading.stopLoop()
+                //reset
+                start = null
+
+                return true;
+            }
+        }
+
         var loopWidth = function (timestamp) {
-            if (!start) { start = timestamp; } //记录第一次绘制时间
+            if (!start) {
+                start = timestamp;
+            } //记录第一次绘制时间
             time_interseptal += timestamp - start; //第一次绘制时间与第二次绘制时间的时间差 （递增）
             percentage = time_interseptal / parseInt(options.speed, 10);
-            loadingElement.style.width = (60 * getTimeFunc(options.easing, percentage)) + '%';
+            loadingElement.style.width = (100 * getTimeFunc(options.easing, percentage)) + '%';
             width = loadingElement.style.width.replace(/\%*$/, '')
-            if (width < 100) {
+            if (!soomth_loading.cancelProgress(width)) {
                 frameId = window.requestAnimationFrame(loopWidth)
+                start = timestamp; //以此类推
             }
         }
 
         //start loading
-        stopLoop()
+        soomth_loading.stopLoop()
         frameId = window.requestAnimationFrame(loopWidth)
 
-        return {
-            stopLoop: stopLoop
-        }
+        //return public apis
+        return soomth_loading;
     }
 
     return smoothLoading;
-})
-;
+});
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define('amplifier',[], function () {
+            return factory();
+        });
+    } else if (typeof exports === "object" && typeof module !== "undefined") {
+        module.exports = factory();
+    } else {
+        window.amplifier = factory();
+    }
+})(function () {
+    var amplifier = function (selector) {
+        var body = document.body,
+            mask = null, //the topest layout except the element local centre
+            center_el = null, // element to center (horizatal, vertical)
+            scale_el = null;  // element to scale
 
+        var wrapper = document.querySelector(selector);
 
+        var getTranslate = function (elem) {
+            var domRect = elem.getBoundingClientRect() || new TypeError("elem must be a HtmlElement"),
+                centerDistance = {
+                    x: 0,
+                    y: 0
+                };
+
+            centerDistance.x = document.body.clientWidth / 2 - domRect.left - domRect.width / 2;
+            centerDistance.y = document.body.clientHeight / 2 - domRect.top - domRect.height / 2;
+
+            return centerDistance;
+
+        }
+
+        var zIndex = 1;
+
+        wrapper.onclick = function (e) {
+            var target = e.target;
+            if (target.className.indexOf('img-300') > -1) {
+                //prevent repeat toggle scale and return default status
+                if (target.className.indexOf('scale') > -1) {
+                    body.removeChild(mask)
+                    //async end animation
+                    setTimeout(function () {
+                        center_el.classList.remove('h-v-center')
+                        center_el.style.zIndex = zIndex++ //当active的item恢复默认状态的过程中，优先级最高不会被其他item遮挡
+                        center_el.style.transform = 'translate(0, 0)'
+                        scale_el.classList.remove('scale')
+                    })
+                    return;
+                }
+
+                //ready for animation
+                scale_el = target
+                center_el = target.parentNode
+
+                var Distance = getTranslate(center_el);
+
+                mask = document.createElement('div')
+                mask.classList.add('mask')
+                body.appendChild(mask)
+
+                e.stopPropagation();
+
+                //async start animation
+                setTimeout(function () {
+                    mask.classList.add('fade')
+                    center_el.classList.add('h-v-center')
+                    center_el.style.transform = 'translate(' + Distance.x + 'px,' + Distance.y + 'px)';
+                    scale_el.classList.add('scale')
+                })
+            }
+        }
+    }
+    return amplifier;
+});
 define('page/index', [
     'css!page/index.css',
     'bootstrap',
     'event-custom-native',
-    "smooth-load"
-], function (css, Bootstrap, CustomEvent, smoothLoad) {
+    "smooth-load",
+    "amplifier"
+], function (css, Bootstrap, CustomEvent, smoothLoad, Amplifier) {
     'use strict';
     var event = new CustomEvent('fuckyou', {
             detail: {
@@ -452,11 +539,24 @@ define('page/index', [
     var load_el = document.querySelector('.line'),
         xixi = smoothLoad({
             elem: load_el,
-            speed: 8000,
-            easing: 'ease-in'
+            speed: 2000,
+            easing: 'ease-in-out'
         })
 
+    //模拟http请求
+    setTimeout(function () {
+        xixi.stopLoop();
+        load_el.style.width = 100 + '%';
+        setTimeout(function () {
+            load_el.style.width = 0;
+        }, 200)
+    }, 1000)
+
     var elTest = document.querySelector('.d1');
+
+    elTest.onclick = function () {
+        xixi.stopLoop()
+    }
 
     function getEndLocation(el) {
         var location = 0;
@@ -467,48 +567,18 @@ define('page/index', [
                 el = el.offsetParent
             } while (el)
         }
-         console.log(location)
+        console.log(location)
         return location
     }
     // console.log(elTest.offsetTop)
     getEndLocation(elTest)
+    Amplifier('.wrapper')
 
-    var listen  = function (center_el, scale_el) {
-        var body = document.body,
-             mask = null;
-        scale_el.onclick = function (e) {
-            if(scale_el.className.indexOf('scale') > -1){
-                return;
-            }
-            mask = document.createElement('div')
-            mask.classList.add('mask')
-            body.appendChild(mask)
-            e.stopPropagation();
-            setTimeout(function () {
-                mask.classList.add('fade')
-                center_el.classList.add('h-v-center')
-                scale_el.classList.add('scale')
-            })
-        }
-        document.onclick = function (e) {
-            var target = e.target;
-            if(target.className.indexOf('mask') > -1) {
-                body.removeChild(target)   
-                setTimeout(function () {         
-                    center_el.classList.remove('h-v-center')
-                    scale_el.classList.remove('scale')
-                })
-            }
-        }
-    }
-    var el_c = document.querySelector('.zoom-img-wrapper'),
-        el_s = document.querySelector('.img-300');
-    listen(el_c, el_s);
-    
+
 });
 
 define('page/render', [], function () {
-    var m_ele = document.querySelector('*[data-module]') || 0,
+    var m_ele = document.querySelector('body[data-module]') || 0,
     m_id = m_ele.getAttribute('data-module');
     m_id && require([m_id]);
 })
