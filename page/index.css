@@ -29,7 +29,19 @@ body {
     flex-grow: 1;
     background: #794;
 }
+.wrapper {
+    margin-top: 200px;
+}
+.dj {
+    opacity: 0;
+    transform: translateY(-20%);
+    transition: all 1s ease-in-out;
+}
 
+.show {
+    transform: translateY(0);
+    opacity: 1;
+}
 .loading {
     position: fixed;
     top: 0;

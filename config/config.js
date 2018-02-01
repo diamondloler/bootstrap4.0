@@ -11,7 +11,8 @@ requirejs.config({
         "scroll": 'lib/smooth-scroll/dist/js/smooth-scroll.min',
         "event-custom-native": 'lib/event-unit/EventCustom',
         "smooth-load": 'lib/smooth-load/smooth-load',
-        "amplifier": 'lib/amplifierjs/amplifier'
+        "amplifier": 'lib/amplifierjs/amplifier',
+        "scrollToTarget": 'lib/scrollToTarget/scrollToTarget'
     },
     map: {
         "*": {

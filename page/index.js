@@ -3,8 +3,9 @@ define('page/index', [
     'bootstrap',
     'event-custom-native',
     "smooth-load",
-    "amplifier"
-], function (css, Bootstrap, CustomEvent, smoothLoad, Amplifier) {
+    "amplifier",
+    'scrollToTarget'
+], function (css, Bootstrap, CustomEvent, smoothLoad, Amplifier, ScrollToTarget) {
     'use strict';
     var event = new CustomEvent('fuckyou', {
             detail: {
@@ -56,6 +57,8 @@ define('page/index', [
     // console.log(elTest.offsetTop)
     getEndLocation(elTest)
     Amplifier('.wrapper')
+
+    ScrollToTarget(['.dj'],['show'],true)
 
 
 });
