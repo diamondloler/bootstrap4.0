@@ -556,7 +556,7 @@ define('lib/require-css/css.min!lib/amplifierjs/amplifier',[],function(){});
                     mask.classList.add('amplifier_fade')
                     center_el.style.transform = 'translate(' + Distance.x + 'px,' + Distance.y + 'px)';
                     scale_el.classList.add('amplifier_scale')
-                }, 10)
+                }, 30)
             }
         }
     }
