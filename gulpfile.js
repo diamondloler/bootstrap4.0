@@ -24,6 +24,7 @@ var getAMDModule = function (globList) {
 
 gulp.task('css', function () {
     return gulp.src(['./lib/bootstrap/dist/css/bootstrap.min.css',
+            './lib/amplifierjs/amplifier.css',
             './page/*.css'
         ])
         .pipe(sourcemaps.init())

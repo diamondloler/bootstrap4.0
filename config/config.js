@@ -21,6 +21,9 @@ requirejs.config({
     shim: {
         "bootstrap": {
             deps: ["jquery"]
+        },
+        "amplifier": {
+            deps: ["css!lib/amplifierjs/amplifier.css"]
         }
     }
 })

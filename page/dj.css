@@ -2,9 +2,15 @@
     width: 100px;
     height: 100px;
     background: #A12;
-    position: relative;
+    position: absolute;
 }
 .ul li{
    margin: 500px 0; 
    color: #802de4
+}
+.padd {
+    padding-top: 100px;
+}
+.dd {
+    position: relative;
 }

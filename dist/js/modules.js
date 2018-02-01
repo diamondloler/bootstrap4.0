@@ -171,7 +171,7 @@ define('lib/require-css/css.min!page/dj',[],function(){});
 (function () {
     var Event_Unit = null,
         Event_Custom = null
-       
+
     //adjust main font project
     if (typeof define === 'function' && define.amd) {
         define('dragger',['event-unit',
@@ -192,11 +192,15 @@ define('lib/require-css/css.min!page/dj',[],function(){});
 
     function dragger(element_id) {
         var target = null, //event target
-            drag = null, //drag element
+            drag = null, //drag element,
+            dragStyle = null,
             id = element_id.replace(/^\#/, ''),
             diffX = 0,
             diffY = 0,
             drag_flow = new Event_Custom(),
+            offsetParent = null,
+            offsetParentX = 0,
+            offsetParentY = 0,
             handleStart = function (e) {
                 console.log('drag start!')
             },
@@ -212,6 +216,41 @@ define('lib/require-css/css.min!page/dj',[],function(){});
         drag_flow.addHandler('dragging', handleDragging)
         drag_flow.addHandler('drag.done', handleEnd)
 
+        var getEndOffsetTop = function (el) {
+            var EndOffsetTop = 0;
+            if (el.offsetParent) {
+                do {
+                    EndOffsetTop += el.offsetTop
+                    el = el.offsetParent
+                } while (el)
+            }
+            return EndOffsetTop
+        }
+
+        var getEndOffsetLeft = function (el) {
+            var EndOffsetLeft = 0;
+            if (el.offsetParent) {
+                do {
+                    EndOffsetLeft += el.offsetLeft
+                    el = el.offsetParent
+                } while (el)
+            }
+            return EndOffsetLeft
+        }
+
+        var getPositionParent = function (el) {
+            if (el.parentNode) {
+                do {
+                    if (window.getComputedStyle(el.parentNode).position == 'relative') {
+                        return el.parentNode
+                    }
+                    el = el.parentNode
+                } while (el)
+
+            }
+        }
+
+
         var handler = function (event) {
             target = Event_Unit.getTarget(event)
 
@@ -222,9 +261,16 @@ define('lib/require-css/css.min!page/dj',[],function(){});
                         drag_flow.fire('drag.start', {
                             type: 'drag.start'
                         })
+
                         drag = target
-                        diffX = event.clientX - drag.offsetLeft
-                        diffY = event.clientY - drag.offsetTop
+                        dragStyle = drag.style 
+                       
+                        offsetParent = getPositionParent(drag)
+                        offsetParentY = offsetParent == undefined ? 0 : getEndOffsetTop(offsetParent)
+                        offsetParentX = offsetParent == undefined ? 0 : getEndOffsetLeft(offsetParent)
+            
+                        diffX = event.clientX - getEndOffsetLeft(drag)
+                        diffY = event.clientY - getEndOffsetTop(drag)
                     }
                     break;
                 case 'mousemove':
@@ -232,8 +278,9 @@ define('lib/require-css/css.min!page/dj',[],function(){});
                         drag_flow.fire('dragging', {
                             type: 'dragging'
                         })
-                        drag.style.left = (event.clientX - diffX) + 'px'
-                        drag.style.top = (event.clientY - diffY) + 'px'
+
+                        dragStyle.left = (event.clientX - diffX - offsetParentX) + 'px'
+                        dragStyle.top = (event.clientY - diffY - offsetParentY) + 'px'
                     }
                     break;
                 case 'mouseup':
@@ -272,15 +319,7 @@ define('page/dj', [
     'use strict';
     var haha = Dragger('#9527');
     haha.enable();
-
-    var xixi = new Scroll(),
-    li = document.querySelector('.point'),
-    toggle = document.querySelector('.test'),
-    options = {
-        speed: 2000,
-        easing: 'easeOutCubic'
-    };
-    xixi.animateScroll(li, toggle, options)
+    
 
 });
 
@@ -359,8 +398,8 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
 
         /**
          * merge user settings
-         * @param {obj} target Merged destination
-         * @returns {obj}
+         * @param {obj} target Merge sources
+         * @returns {obj} Merged target
          */
         var merge = function (target) {
             for (var i = 1; i < arguments.length; i++) {
@@ -440,6 +479,8 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
 
     return smoothLoading;
 });
+
+define('lib/require-css/css.min!lib/amplifierjs/amplifier',[],function(){});
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         define('amplifier',[], function () {
@@ -459,15 +500,20 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
 
         var wrapper = document.querySelector(selector);
 
-        var getTranslate = function (elem) {
-            var domRect = elem.getBoundingClientRect() || new TypeError("elem must be a HtmlElement"),
+        var getTranslation = function (elem) {
+            if (elem == undefined || typeof elem.nodeType == 'undefined' || elem.nodeType != 1) {
+                throw new TypeError("elem must be a HTMLElement");
+            }
+
+            var domRect = elem.getBoundingClientRect(),
                 centerDistance = {
                     x: 0,
                     y: 0
                 };
 
-            centerDistance.x = document.body.clientWidth / 2 - domRect.left - domRect.width / 2;
-            centerDistance.y = document.body.clientHeight / 2 - domRect.top - domRect.height / 2;
+            
+            centerDistance.x = body.clientWidth / 2 - domRect.left - domRect.width / 2;
+            centerDistance.y = body.clientHeight / 2 - domRect.top - domRect.height / 2;
 
             return centerDistance;
 
@@ -477,16 +523,16 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
 
         wrapper.onclick = function (e) {
             var target = e.target;
-            if (target.className.indexOf('img-300') > -1) {
+            if (target.className.indexOf('amplifier_img') > -1) {
                 //prevent repeat toggle scale and return default status
-                if (target.className.indexOf('scale') > -1) {
+                if (target.className.indexOf('amplifier_scale') > -1) {
                     body.removeChild(mask)
                     //async end animation
                     setTimeout(function () {
-                        center_el.classList.remove('h-v-center')
+                        center_el.classList.remove('amplifier_maxIndex')
                         center_el.style.zIndex = zIndex++ //当active的item恢复默认状态的过程中，优先级最高不会被其他item遮挡
                         center_el.style.transform = 'translate(0, 0)'
-                        scale_el.classList.remove('scale')
+                        scale_el.classList.remove('amplifier_scale')
                     })
                     return;
                 }
@@ -494,22 +540,23 @@ null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"
                 //ready for animation
                 scale_el = target
                 center_el = target.parentNode
-
-                var Distance = getTranslate(center_el);
-
+               
+                var Distance = getTranslation(center_el);
+               
                 mask = document.createElement('div')
-                mask.classList.add('mask')
+                mask.classList.add('amplifier_mask')
                 body.appendChild(mask)
-
+                
+                mask.style.display = 'block'
                 e.stopPropagation();
 
                 //async start animation
                 setTimeout(function () {
-                    mask.classList.add('fade')
-                    center_el.classList.add('h-v-center')
+                    center_el.classList.add('amplifier_maxIndex')
+                    mask.classList.add('amplifier_fade')
                     center_el.style.transform = 'translate(' + Distance.x + 'px,' + Distance.y + 'px)';
-                    scale_el.classList.add('scale')
-                })
+                    scale_el.classList.add('amplifier_scale')
+                }, 10)
             }
         }
     }
