@@ -58,7 +58,7 @@ define('page/index', [
     getEndLocation(elTest)
     Amplifier('.wrapper')
 
-    ScrollToTarget(['.dj'],['show'],true)
+    ScrollToTarget(['.dj', '.aj'],['show','shake'],true)
 
 
 });
