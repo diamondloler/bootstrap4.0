@@ -12,7 +12,8 @@ requirejs.config({
         "event-custom-native": 'lib/event-unit/EventCustom',
         "smooth-load": 'lib/smooth-load/smooth-load',
         "amplifier": 'lib/amplifierjs/amplifier',
-        "scrollToTarget": 'lib/scrollToTarget/scrollToTarget'
+        "scrollToTarget": 'lib/scrollToTarget/scrollToTarget',
+        "date-builder": 'lib/date-builder/date-builder'
     },
     map: {
         "*": {
