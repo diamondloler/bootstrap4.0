@@ -62,8 +62,11 @@ define('page/index', [
 
     ScrollToTarget(['.dj', '.aj'], ['show', 'shake'], true)
      
-    var date_ = dateBuilder('2018-8-6');
-    console.log(date_.add(5, 'months').format('YYYY-MM-DD'))
+    var date_ = dateBuilder();
+    console.log(date_.$value)
 
+    var node = document.querySelector('.absd')
+    var node_ = node.cloneNode(true)
+    console.log(node_)
 
 });
