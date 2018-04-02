@@ -9,7 +9,8 @@ var postcss = require('gulp-postcss'),
     htmlreplace = require('gulp-html-replace'),
     replace = require('gulp-replace'),
     uglify = require('gulp-uglify'),
-    glob = require("glob");
+    glob = require("glob"),
+    flowRemoveTypes = require('gulp-flow-remove-types');
 
 var getAMDModule = function (globList) {
     var list = [];
@@ -88,6 +89,7 @@ gulp.task('js', ['rjs'], function () {
             loadMaps: true
         }))
         .pipe(concat('main.min.js'))
+        .pipe(flowRemoveTypes())
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist/js'))

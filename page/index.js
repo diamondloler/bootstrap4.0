@@ -8,6 +8,8 @@ define('page/index', [
     "date-builder"
 ], function (css, Bootstrap, CustomEvent, smoothLoad, Amplifier, ScrollToTarget, dateBuilder) {
     'use strict';
+    console.log(Amplifier)
+
     var event = new CustomEvent('fuckyou', {
             detail: {
                 a: 1
@@ -57,10 +59,10 @@ define('page/index', [
     }
     // console.log(elTest.offsetTop)
     getEndLocation(elTest)
-    Amplifier('.wrapper')
+    Amplifier('.wrapper', 'amplifier_img').init()
 
 
-    ScrollToTarget(['.dj', '.aj'], ['show', 'shake'], true)
+    ScrollToTarget(['.dj', '.aj', '.dum'], ['show', 'shake', 'amf'], true)
      
     var date_ = dateBuilder();
     console.log(date_.$value)

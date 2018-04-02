@@ -881,6 +881,8 @@ define('page/index', [
     "date-builder"
 ], function (css, Bootstrap, CustomEvent, smoothLoad, Amplifier, ScrollToTarget, dateBuilder) {
     'use strict';
+
+
     var event = new CustomEvent('fuckyou', {
             detail: {
                 a: 1
@@ -933,11 +935,14 @@ define('page/index', [
     Amplifier('.wrapper')
 
 
-    ScrollToTarget(['.dj', '.aj'], ['show', 'shake'], true)
+    ScrollToTarget(['.dj', '.aj', '.dum'], ['show', 'shake', 'amf'], true)
      
     var date_ = dateBuilder();
     console.log(date_.$value)
 
+    var node = document.querySelector('.absd')
+    var node_ = node.cloneNode(true)
+    console.log(node_)
 
 });
 

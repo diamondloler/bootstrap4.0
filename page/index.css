@@ -37,7 +37,23 @@ body {
     transform: translateY(-20%);
     transition: all 1s ease-in-out;
 }
-
+.aj {
+    margin-bottom: 200px;
+}
+.dumf {
+    text-align: center;
+    padding: 9px 10px;
+    margin-bottom: 200px;
+}
+.dum {
+    display: inline-block;
+    width: 200px;
+    height: 200px; 
+    transition: all .6s ease-in-out .5s;
+}
+.amf {
+    transform: scale(2);
+}
 .show {
     transform: translateY(0);
     opacity: 1;
